@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class Book {
   private final long id;
   private final String name;
-  private final long author_id;
-  private final long genre_id;
+  private final Author author;
+  private final Genre genre;
 }
 

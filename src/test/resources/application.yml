@@ -5,8 +5,7 @@ spring:
   sql:
     init:
       mode: always
-      data-locations: book.sql, author.sql, genre.sql
-      schema-locations: schema.sql
+      data-locations: author.sql, genre.sql, book.sql
   h2:
     console:
       enabled: true

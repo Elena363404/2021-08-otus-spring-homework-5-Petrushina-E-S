@@ -9,10 +9,9 @@ import org.springframework.shell.Shell;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.elena363404.dao.AuthorDao;
+import ru.otus.elena363404.dao.BookDao;
 import ru.otus.elena363404.dao.GenreDao;
-import ru.otus.elena363404.domain.Book;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Test BookServiceByInput")
@@ -23,16 +22,22 @@ import static org.mockito.Mockito.*;
 class BookServiceByInputTest {
 
   @MockBean
-  private IOService ioService;
+  IOService ioService;
+
+  @MockBean
+  IdentifierGenerator idGenerator;
 
   @Autowired
-  private BookService bookService;
+  BookService bookService;
 
   @Autowired
-  private AuthorDao authorDao;
+  AuthorDao authorDao;
 
   @Autowired
-  private GenreDao genreDao;
+  GenreDao genreDao;
+
+  @MockBean
+  BookDao bookDao;
 
   @MockBean
   Shell shell;
@@ -40,35 +45,31 @@ class BookServiceByInputTest {
   @Test
   @DisplayName("Check notification on create book by input")
   void createBook() {
-    Book expectedBook = new Book(1, "Oblomov", 2, 4);
     when(ioService.readString()).thenReturn("Oblomov");
     when(ioService.getInputId()).thenReturn(2L).thenReturn(4L);
-    Book book = bookService.createBook();
+    when(idGenerator.generateNextBookId()).thenReturn(6L);
+    bookService.createBook();
     verify(ioService, times(1)).out("Input name for the book: \n");
     verify(ioService, times(1)).out("Input id Author for the book from List: \n" + authorDao.getAllAuthor());
     verify(ioService, times(1)).out("Input id Genre for the book from List: \n" + genreDao.getAllGenre());
-
-    assertEquals(expectedBook, book);
   }
 
   @Test
   @DisplayName("Check notification on update book by input")
   void updateBook() {
-    Book expectedBook = new Book(1, "Oblomov", 2, 4);
     when(ioService.readString()).thenReturn("Oblomov");
     when(ioService.getInputId()).thenReturn(1L).thenReturn(2L).thenReturn(4L);
-    Book book = bookService.updateBook();
+    bookService.updateBook();
     verify(ioService, times(1)).out("Input id of the book for update: \n");
     verify(ioService, times(1)).out("Input a new name for the book: \n");
     verify(ioService, times(1)).out("Input id Author for the book from List: \n" + authorDao.getAllAuthor());
     verify(ioService, times(1)).out("Input id Genre for the book from List: \n" + genreDao.getAllGenre());
-    assertEquals(expectedBook, book);
   }
 
   @Test
   @DisplayName("Check notification on delete book by input")
   void deleteBook() {
-    long id = bookService.deleteBook();
+    bookService.deleteBook();
     verify(ioService, times(1)).out("Input id of the book for delete: \n");
     when(ioService.getInputId()).thenReturn(1L);
   }

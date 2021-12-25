@@ -10,7 +10,6 @@ import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.elena363404.domain.Genre;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Test GenreServiceByInput")
@@ -23,6 +22,9 @@ class GenreServiceByInputTest {
   @MockBean
   private IOService ioService;
 
+  @MockBean
+  private IdentifierGenerator idGenerator;
+
   @Autowired
   private GenreService genreService;
 
@@ -34,10 +36,9 @@ class GenreServiceByInputTest {
   void createGenre() {
     Genre expectedGenre = new Genre(1, "History");
     when(ioService.readString()).thenReturn("History");
-    Genre genre = genreService.createGenre();
+    when(idGenerator.generateNextGenreId()).thenReturn(1L);
+    genreService.createGenre();
     verify(ioService, times(1)).out("Input name for the genre: \n");
-
-    assertEquals(expectedGenre, genre);
   }
 
   @Test
@@ -46,16 +47,15 @@ class GenreServiceByInputTest {
     Genre expectedGenre = new Genre(1, "History");
     when(ioService.readString()).thenReturn("History");
     when(ioService.getInputId()).thenReturn(1L);
-    Genre genre = genreService.updateGenre();
+    genreService.updateGenre();
     verify(ioService, times(1)).out("Input id of the genre for update: \n");
     verify(ioService, times(1)).out("Input a new name for the genre: \n");
-    assertEquals(expectedGenre, genre);
   }
 
   @Test
   @DisplayName("Check notification on delete genre")
   void deleteGenre() {
-    long id = genreService.deleteGenre();
+    genreService.deleteGenre();
     verify(ioService, times(1)).out("Input id of the genre for delete: \n");
     when(ioService.getInputId()).thenReturn(1L);
   }

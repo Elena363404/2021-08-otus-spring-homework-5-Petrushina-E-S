@@ -60,8 +60,4 @@ public class GenreDaoJdbc implements GenreDao {
     return jdbc.query("select * from genre", new GenreDaoJdbc.GenreMapper());
   }
 
-  @Override
-  public long getNextGenreId() {
-    return jdbc.getJdbcOperations().queryForObject("select coalesce(max(id)+1, 1) from genre", Integer.class);
-  }
 }

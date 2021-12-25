@@ -9,8 +9,6 @@ import org.springframework.shell.Shell;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.elena363404.domain.Author;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Test AuthorServiceByInput")
@@ -23,6 +21,9 @@ class AuthorServiceByInputTest {
   @MockBean
   private IOService ioService;
 
+  @MockBean
+  private IdentifierGenerator idGenerator;
+
   @Autowired
   private AuthorService authorService;
 
@@ -34,11 +35,11 @@ class AuthorServiceByInputTest {
   void createAuthorTest() {
 
     Author expectedAuthor = new Author(1, "Mikhail Lermontov");
-    when(ioService.readString()).thenReturn("Mikhail Lermontov");
-    Author author = authorService.createAuthor();
-    verify(ioService, times(1)).out("Input name for the author: \n");
 
-    assertEquals(expectedAuthor, author);
+    when(ioService.readString()).thenReturn("Mikhail Lermontov");
+    when(idGenerator.generateNextAuthorId()).thenReturn(1L);
+    authorService.createAuthor();
+    verify(ioService, times(1)).out("Input name for the author: \n");
   }
 
 
@@ -48,16 +49,15 @@ class AuthorServiceByInputTest {
     Author expectedAuthor = new Author(1, "Mikhail Lermontov");
     when(ioService.readString()).thenReturn("Mikhail Lermontov");
     when(ioService.getInputId()).thenReturn(1L);
-    Author author = authorService.updateAuthor();
+    authorService.updateAuthor();
     verify(ioService, times(1)).out("Input id of the author for update: \n");
     verify(ioService, times(1)).out("Input a new name for the author: \n");
-    assertEquals(expectedAuthor, author);
   }
 
   @Test
   @DisplayName("Check notification on delete author")
   void deleteAuthorTest() {
-    long id = authorService.deleteAuthor();
+    authorService.deleteAuthor();
     verify(ioService, times(1)).out("Input id of the author for delete: \n");
     when(ioService.getInputId()).thenReturn(1L);
   }

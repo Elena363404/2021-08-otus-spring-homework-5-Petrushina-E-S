@@ -2,12 +2,18 @@ package ru.otus.elena363404.service;
 
 import ru.otus.elena363404.domain.Author;
 
+import java.util.List;
+
 
 public interface AuthorService {
 
-  Author createAuthor();
+  void createAuthor();
 
-  Author updateAuthor();
+  void updateAuthor();
 
-  long deleteAuthor();
+  void deleteAuthor();
+
+  void getAuthorById();
+
+  void getAllAuthor();
 }

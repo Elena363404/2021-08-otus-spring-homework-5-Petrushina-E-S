@@ -18,6 +18,4 @@ public interface BookDao {
 
   List<Book> getAllBook();
 
-  long getNextBookId();
-
 }

@@ -4,9 +4,13 @@ import ru.otus.elena363404.domain.Book;
 
 public interface BookService {
 
-  Book createBook();
+  void createBook();
 
-  Book updateBook();
+  void updateBook();
 
-  long deleteBook();
+  void deleteBook();
+
+  void getBookById();
+
+  void getAllBook();
 }

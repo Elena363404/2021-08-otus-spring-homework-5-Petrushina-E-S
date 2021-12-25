@@ -19,11 +19,11 @@ class BookTest {
   @DisplayName("Create Book by constructor")
   @Test
   void shouldHaveCorrectConstructor() {
-    Book book = new Book(4, "It", 3, 2);
+    Book book = new Book(4, "It", new Author(3, "King"), new Genre(2, "Horror"));
 
     assertEquals(4, book.getId());
     assertEquals("It", book.getName());
-    assertEquals(3, book.getAuthor_id());
-    assertEquals(2, book.getGenre_id());
+    assertEquals("King", book.getAuthor().getName());
+    assertEquals("Horror", book.getGenre().getName());
   }
 }

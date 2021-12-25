@@ -59,9 +59,4 @@ public class AuthorDaoJdbc implements AuthorDao {
   public List<Author> getAllAuthor() {
     return jdbc.query("select * from author", new AuthorMapper());
   }
-
-  @Override
-  public long getNextAuthorId() {
-    return jdbc.getJdbcOperations().queryForObject("select coalesce(max(id)+1, 1) from author", Integer.class);
-  }
 }
