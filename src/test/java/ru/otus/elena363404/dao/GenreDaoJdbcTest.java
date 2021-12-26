@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Import(GenreDaoJdbc.class)
 @Sql("/genre.sql")
 class GenreDaoJdbcTest {
-  private static final int EXISTING_GENRE_ID = 10;
+  private static final int EXISTING_GENRE_ID = 5;
   private static final String EXISTING_GENRE_NAME = "Thriller";
   private static final int GENRE_ID_FOR_DELETE = 2;
 
@@ -30,7 +30,7 @@ class GenreDaoJdbcTest {
   @DisplayName("Add genre in the DB")
   @Test
   void shouldInsertGenre() {
-    Genre expectedGenre = new Genre(7, "Thriller");
+    Genre expectedGenre = new Genre(5, "Thriller");
     genreDao.createGenre(expectedGenre);
     Genre actualGenre = genreDao.getGenreById(expectedGenre.getId());
     assertThat(actualGenre).usingRecursiveComparison().isEqualTo(expectedGenre);

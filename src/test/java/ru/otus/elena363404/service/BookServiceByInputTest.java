@@ -24,9 +24,6 @@ class BookServiceByInputTest {
   @MockBean
   IOService ioService;
 
-  @MockBean
-  IdentifierGenerator idGenerator;
-
   @Autowired
   BookService bookService;
 
@@ -47,7 +44,6 @@ class BookServiceByInputTest {
   void createBook() {
     when(ioService.readString()).thenReturn("Oblomov");
     when(ioService.getInputId()).thenReturn(2L).thenReturn(4L);
-    when(idGenerator.generateNextBookId()).thenReturn(6L);
     bookService.createBook();
     verify(ioService, times(1)).out("Input name for the book: \n");
     verify(ioService, times(1)).out("Input id Author for the book from List: \n" + authorDao.getAllAuthor());

@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public class BookServiceByInput implements BookService {
 
   private final IOService ioService;
-  private final IdentifierGenerator idGenerator;
   private final BookDao bookDao;
   private final AuthorDao authorDao;
   private final GenreDao genreDao;
@@ -28,8 +27,7 @@ public class BookServiceByInput implements BookService {
     long author_id = ioService.getInputId();
     ioService.out("Input id Genre for the book from List: \n" + genreDao.getAllGenre());
     long genre_id = ioService.getInputId();
-    long idBook = idGenerator.generateNextBookId();
-    Book book = new Book(idBook, nameBook, authorDao.getAuthorById(author_id), genreDao.getGenreById(genre_id));
+    Book book = new Book(nameBook, authorDao.getAuthorById(author_id), genreDao.getGenreById(genre_id));
 
     bookDao.createBook(book);
   }
@@ -44,7 +42,7 @@ public class BookServiceByInput implements BookService {
     long author_id = ioService.getInputId();
     ioService.out("Input id Genre for the book from List: \n" + genreDao.getAllGenre());
     long genre_id = ioService.getInputId();
-    Book book = new Book(id, name, authorDao.getAuthorById(author_id), genreDao.getGenreById(genre_id));
+    Book book = new Book(name, authorDao.getAuthorById(author_id), genreDao.getGenreById(genre_id));
     bookDao.updateBook(book);
   }
 

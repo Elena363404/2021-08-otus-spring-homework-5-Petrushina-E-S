@@ -12,25 +12,22 @@ import java.util.stream.Collectors;
 public class AuthorServiceByInput implements AuthorService{
 
   private final IOService ioService;
-  private final IdentifierGenerator idGenerator;
   private final AuthorDao authorDao;
 
   @Override
   public void createAuthor() {
     ioService.out("Input name for the author: \n");
     String nameAuthor = ioService.readString();
-    long idAuthor = idGenerator.generateNextAuthorId();
-    Author author = new Author(idAuthor, nameAuthor);
+    Author author = new Author(nameAuthor);
     authorDao.createAuthor(author);
   }
 
   @Override
   public void updateAuthor() {
     ioService.out("Input id of the author for update: \n");
-    long id = ioService.getInputId();
     ioService.out("Input a new name for the author: \n");
     String name = ioService.readString();
-    Author author = new Author(id, name);
+    Author author = new Author(name);
     authorDao.updateAuthor(author);
   }
 

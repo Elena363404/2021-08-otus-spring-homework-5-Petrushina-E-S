@@ -1,4 +1,4 @@
-insert into genre (id, `name`) values (1, 'Fantastic');
-insert into genre (id, `name`) values (2, 'Political');
-insert into genre (id, `name`) values (3, 'Novel');
-insert into genre (id, `name`) values (4, 'Horror');
+insert into genre (`name`) values ('Fantastic');
+insert into genre (`name`) values ('Political');
+insert into genre (`name`) values ('Novel');
+insert into genre (`name`) values ('Horror');

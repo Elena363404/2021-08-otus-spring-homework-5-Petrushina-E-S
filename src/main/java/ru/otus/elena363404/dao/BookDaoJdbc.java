@@ -28,9 +28,11 @@ public class BookDaoJdbc implements BookDao {
             long id = resultSet.getLong("id");
             String name = resultSet.getString("name");
             long author_id = resultSet.getLong("author_id");
+            String author_name = resultSet.getString("author_name");
             long genre_id = resultSet.getLong("genre_id");
+            String genre_name = resultSet.getString("genre_name");
 
-            return new Book(id, name, authorDao.getAuthorById(author_id), genreDao.getGenreById(genre_id));
+            return new Book(id, name, new Author(author_id, author_name), new Genre(genre_id, genre_name));
         }
     }
 
@@ -38,13 +40,28 @@ public class BookDaoJdbc implements BookDao {
     public void createBook(Book book) {
         Author author = book.getAuthor();
         Genre genre = book.getGenre();
-        jdbc.update("insert into book(id, name, author_id, genre_id) values (:id, :name, :author_id, :genre_id)", Map.of("id", book.getId(), "name", book.getName(), "author_id", author.getId(), "genre_id", genre.getId()));
+        jdbc.update("insert into book(name, author_id, genre_id) values (:name, :author_id, :genre_id)", Map.of( "name", book.getName(), "author_id", author.getId(), "genre_id", genre.getId()));
     }
 
     @Override
     public Book getBookById(long id) {
         try {
-            return jdbc.queryForObject("select * from book where id = :id", Map.of("id", id), new BookDaoJdbc.BookMapper());
+            return jdbc.queryForObject(
+              "select " +
+              "  b.id," +
+              "  b.name," +
+              "  b.author_id," +
+              "  b.genre_id, " +
+              "  a.name as author_name," +
+              "  g.name as genre_name " +
+              "from " +
+              "  book b " +
+              "left join " +
+              "  author a on b.author_id = a.id " +
+              "left join" +
+              "  genre g on b.genre_id = g.id " +
+              "where " +
+              "  b.id = :id", Map.of("id", id), new BookDaoJdbc.BookMapper());
         } catch (EmptyResultDataAccessException err) {
             return null;
         }
@@ -64,12 +81,39 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getAllBookByAuthorId(long id) {
-        return jdbc.query("select * from book where author_id = :author_id", Map.of("author_id", id), new BookDaoJdbc.BookMapper());
+        return jdbc.query(
+          "select " +
+          "  b.id," +
+          "  b.name," +
+          "  b.author_id," +
+          "  b.genre_id, " +
+          "  a.name as author_name," +
+          "  g.name as genre_name " +
+          "from " +
+          "  book b " +
+          "join " +
+          "  author a on b.author_id = a.id " +
+          "left join" +
+          "  genre g on b.genre_id = g.id " +
+          "where " +
+          "  b.author_id = :author_id", Map.of("author_id", id), new BookDaoJdbc.BookMapper());
     }
 
     @Override
     public List<Book> getAllBook() {
 
-        return jdbc.query("select * from book", new BookDaoJdbc.BookMapper());
+        return jdbc.query("select " +
+          "  b.id," +
+          "  b.name," +
+          "  b.author_id," +
+          "  b.genre_id, " +
+          "  a.name as author_name," +
+          "  g.name as genre_name " +
+          "from " +
+          "  book b " +
+          "left join " +
+          "  author a on b.author_id = a.id " +
+          "left join" +
+          "  genre g on b.genre_id = g.id", new BookDaoJdbc.BookMapper());
     }
 }

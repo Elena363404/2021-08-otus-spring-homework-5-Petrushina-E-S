@@ -12,15 +12,13 @@ import java.util.stream.Collectors;
 public class GenreServiceByInput implements GenreService {
 
   private final IOService ioService;
-  private final IdentifierGenerator idGenerator;
   private final GenreDao genreDao;
 
   @Override
   public void createGenre() {
     ioService.out("Input name for the genre: \n");
     String nameGenre = ioService.readString();
-    long idGenre = idGenerator.generateNextGenreId();
-    Genre genre = new Genre(idGenre, nameGenre);
+    Genre genre = new Genre(nameGenre);
     genreDao.createGenre(genre);
   }
 

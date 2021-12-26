@@ -21,9 +21,6 @@ class AuthorServiceByInputTest {
   @MockBean
   private IOService ioService;
 
-  @MockBean
-  private IdentifierGenerator idGenerator;
-
   @Autowired
   private AuthorService authorService;
 
@@ -34,10 +31,9 @@ class AuthorServiceByInputTest {
   @DisplayName("Check notification on create author by input")
   void createAuthorTest() {
 
-    Author expectedAuthor = new Author(1, "Mikhail Lermontov");
+    Author expectedAuthor = new Author(5, "Mikhail Lermontov");
 
     when(ioService.readString()).thenReturn("Mikhail Lermontov");
-    when(idGenerator.generateNextAuthorId()).thenReturn(1L);
     authorService.createAuthor();
     verify(ioService, times(1)).out("Input name for the author: \n");
   }

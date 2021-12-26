@@ -22,9 +22,6 @@ class GenreServiceByInputTest {
   @MockBean
   private IOService ioService;
 
-  @MockBean
-  private IdentifierGenerator idGenerator;
-
   @Autowired
   private GenreService genreService;
 
@@ -34,9 +31,8 @@ class GenreServiceByInputTest {
   @Test
   @DisplayName("Check notification on create genre by input")
   void createGenre() {
-    Genre expectedGenre = new Genre(1, "History");
+    Genre expectedGenre = new Genre(5, "History");
     when(ioService.readString()).thenReturn("History");
-    when(idGenerator.generateNextGenreId()).thenReturn(1L);
     genreService.createGenre();
     verify(ioService, times(1)).out("Input name for the genre: \n");
   }

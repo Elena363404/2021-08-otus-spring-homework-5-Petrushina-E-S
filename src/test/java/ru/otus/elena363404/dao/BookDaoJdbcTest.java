@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import ru.otus.elena363404.domain.Author;
@@ -32,14 +30,13 @@ class BookDaoJdbcTest {
   private static final String EXISTING_GENRE_NAME = "Novel";
   private static final int BOOK_ID_FOR_DELETE = 2;
 
-
   @Autowired
   BookDaoJdbc bookDao;
 
   @DisplayName("Add book in the DB")
   @Test
   void shouldInsertBook() {
-    Book expectedBook = new Book(6, "BookForTest", new Author(2, "Alexander Pushkin"), new Genre(3, "Novel"));
+    Book expectedBook = new Book(6,"BookForTest", new Author(2,"Alexander Pushkin"), new Genre(3,"Novel"));
     bookDao.createBook(expectedBook);
     Book actualBook = bookDao.getBookById(expectedBook.getId());
     assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);

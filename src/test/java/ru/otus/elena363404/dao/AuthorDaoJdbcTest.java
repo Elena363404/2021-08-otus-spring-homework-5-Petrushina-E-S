@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Sql("/author.sql")
 class AuthorDaoJdbcTest {
 
-  private static final int EXISTING_AUTHOR_ID = 10;
+  private static final int EXISTING_AUTHOR_ID = 5;
   private static final String EXISTING_AUTHOR_NAME = "Marina Tsvetaeva";
   private static final int AUTHOR_ID_FOR_DELETE = 2;
 
@@ -29,7 +29,7 @@ class AuthorDaoJdbcTest {
   @DisplayName("Add author in the DB")
   @Test
   void shouldInsertAuthor() {
-    Author expectedAuthor = new Author(7, "Lermontov");
+    Author expectedAuthor = new Author(5,"Lermontov");
     authorDao.createAuthor(expectedAuthor);
     Author actualAuthor = authorDao.getAuthorById(expectedAuthor.getId());
     assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);

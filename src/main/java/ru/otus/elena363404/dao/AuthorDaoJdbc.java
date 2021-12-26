@@ -32,7 +32,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
   @Override
   public void createAuthor(Author author) {
-    jdbc.update("insert into author(id, name) values (:id, :name)", Map.of("id", author.getId(), "name", author.getName()));
+    jdbc.update("insert into author(name) values (:name)", Map.of("name", author.getName()));
   }
 
   @Override
